@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTab(){
-        Tab tab_home = new Tab(R.string.home,R.mipmap.icon_home,HomeFragment.class);
-        Tab tab_hot = new Tab(R.string.hot,R.mipmap.icon_hot,HotFragment.class);
-        Tab tab_category = new Tab(R.string.catagory,R.mipmap.icon_discover,CategoryFragment.class);
-        Tab tab_cart = new Tab(R.string.cart,R.mipmap.icon_cart,CartFragment.class);
-        Tab tab_mine = new Tab(R.string.mine,R.mipmap.icon_user,MineFragment.class);
+        Tab tab_home = new Tab(R.string.home,R.drawable.selector_icon_home,HomeFragment.class);
+        Tab tab_hot = new Tab(R.string.hot,R.drawable.selector_icon_hot,HotFragment.class);
+        Tab tab_category = new Tab(R.string.catagory,R.drawable.selector_icon_category,CategoryFragment.class);
+        Tab tab_cart = new Tab(R.string.cart,R.drawable.selector_icon_cart,CartFragment.class);
+        Tab tab_mine = new Tab(R.string.mine,R.drawable.selector_icon_mine,MineFragment.class);
 
         mTabs.add(tab_home);
         mTabs.add(tab_hot);
