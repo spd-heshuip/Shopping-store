@@ -26,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
+
     private List<Tab> mTabs = new ArrayList<Tab>(5);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         initTab();
     }
+
+
 
     private void initTab(){
         Tab tab_home = new Tab(R.string.home,R.drawable.selector_icon_home,HomeFragment.class);
