@@ -11,12 +11,20 @@
         android:layout_gravity="center"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:drawableLeft="@mipmap/icon_search"
+        android:drawableLeft="@drawable/icon_search"
         style="@style/search_view"
         android:hint="请输入搜索内容"
 
         android:visibility="gone"
         />
+
+    <ImageButton
+        android:id="@+id/toolbar_leftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        style="?attr/toolbarNavigationButtonStyle"/>
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -36,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        style="?attr/toolbarNavigationButtonStyle"
         android:visibility="gone"
         />
 

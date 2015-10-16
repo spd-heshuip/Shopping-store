@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.learn.shuip.yayashop.R;
 
 
@@ -16,12 +17,13 @@ import com.learn.shuip.yayashop.R;
 public class HotFragment extends Fragment{
 
 
+    private SimpleDraweeView mDrawerView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view= inflater.inflate(R.layout.fragment_hot,container,false);
-
+        View view = inflater.inflate(R.layout.fragment_hot,container,false);
+        mDrawerView = (SimpleDraweeView) view.findViewById(R.id.my_image_view);
         return view ;
 
     }

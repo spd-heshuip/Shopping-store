@@ -2,8 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <com.learn.shuip.yayashop.widget.CustomToolbar
+        android:id="@+id/customtoolbar"
+        app:isShowSearchView="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.learn.shuip.yayashop.widget.CustomToolbar>
 
     <FrameLayout
         android:id="@+id/realtabcontent"

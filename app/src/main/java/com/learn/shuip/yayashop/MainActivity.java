@@ -17,6 +17,7 @@ import com.learn.shuip.yayashop.fragment.CategoryFragment;
 import com.learn.shuip.yayashop.fragment.HomeFragment;
 import com.learn.shuip.yayashop.fragment.HotFragment;
 import com.learn.shuip.yayashop.fragment.MineFragment;
+import com.learn.shuip.yayashop.widget.CustomToolbar;
 import com.learn.shuip.yayashop.widget.FragmentTabHost;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
+    private CustomToolbar mCustomToolbar;
 
     private List<Tab> mTabs = new ArrayList<Tab>(5);
 
@@ -34,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initToolBar();
         initTab();
     }
 
-
+    private void initToolBar(){
+        mCustomToolbar = (CustomToolbar) findViewById(R.id.customtoolbar);
+    }
 
     private void initTab(){
         Tab tab_home = new Tab(R.string.home,R.drawable.selector_icon_home,HomeFragment.class);

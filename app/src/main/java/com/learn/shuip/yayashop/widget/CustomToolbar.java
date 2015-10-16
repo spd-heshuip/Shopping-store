@@ -2,6 +2,7 @@ package com.learn.shuip.yayashop.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.internal.widget.TintManager;
 import android.support.v7.internal.widget.TintTypedArray;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -20,12 +21,16 @@ import com.learn.shuip.yayashop.R;
  */
 public class CustomToolbar extends Toolbar{
 
+    private final static String TAG = "CustomToolbar";
     private LayoutInflater mInflater;
 
     private EditText mSearchView;
     private TextView mTextTitle;
     private ImageButton mRightButton;
+    private ImageButton mLeftButton;
     private View mView;
+
+    private TintManager mTintManager;
 
     public CustomToolbar(Context context) {
         this(context, null);
@@ -39,18 +44,17 @@ public class CustomToolbar extends Toolbar{
         super(context, attrs, defStyleAttr);
 
         initView();
-        setContentInsetsRelative(10,10);
-
+        setContentInsetsRelative(10, 10);
         if(attrs !=null) {
             final TintTypedArray a = TintTypedArray.obtainStyledAttributes(getContext(), attrs,
                     R.styleable.CustomToolbar, defStyleAttr, 0);
-
+            mTintManager = a.getTintManager();
 
             final Drawable rightIcon = a.getDrawable(R.styleable.CustomToolbar_rightButtonIcon);
             if (rightIcon != null) {
-                //setNavigationIcon(navIcon);
                 setRightButtonIcon(rightIcon);
             }
+
             boolean isShowSearchView = a.getBoolean(R.styleable.CustomToolbar_isShowSearchView,false);
             if(isShowSearchView){
                 showSearchView();
@@ -68,6 +72,7 @@ public class CustomToolbar extends Toolbar{
             mTextTitle = (TextView) mView.findViewById(R.id.toolbar_title);
             mSearchView = (EditText) mView.findViewById(R.id.toolbar_searchview);
             mRightButton = (ImageButton) mView.findViewById(R.id.toolbar_rightButton);
+            mLeftButton = (ImageButton) mView.findViewById(R.id.toolbar_leftButton);
 
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
             addView(mView, lp);
@@ -82,8 +87,8 @@ public class CustomToolbar extends Toolbar{
         }
     }
 
-    public  void setRightButtonOnClickListener(OnClickListener li){
-        mRightButton.setOnClickListener(li);
+    public  void setRightButtonOnClickListener(OnClickListener listener){
+        mRightButton.setOnClickListener(listener);
     }
 
     @Override
@@ -93,9 +98,38 @@ public class CustomToolbar extends Toolbar{
     @Override
     public void setTitle(CharSequence title) {
         initView();
-        if(mTextTitle !=null) {
+        if(mTextTitle != null) {
             mTextTitle.setText(title);
             showTitleView();
+        }
+    }
+
+    @Override
+    public void setNavigationIcon(int resId) {
+        setNavigationIcon(mTintManager.getDrawable(resId));
+    }
+
+    @Override
+    public void setNavigationIcon(Drawable icon) {
+        initView();
+        if (mLeftButton != null){
+            if (icon != null){
+                mLeftButton.setImageDrawable(icon);
+                mLeftButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void setNavigationOnClickListener(OnClickListener listener) {
+        if (mLeftButton != null){
+            mLeftButton.setOnClickListener(listener);
+        }
+    }
+
+    public void showNavigationIcon(){
+        if (mLeftButton != null){
+            mLeftButton.setVisibility(View.VISIBLE);
         }
     }
 
