@@ -29,42 +29,43 @@
         <View
             style="@style/line_vertical"
             android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"></View>
+            android:layout_marginTop="3dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/imgview_big"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                app:actualImageScaleType="center" />
 
             <View
                 android:id="@+id/line"
                 style="@style/line_horizontal" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical">
 
-                <ImageView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/imgview_small_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="160dp"
+                    android:layout_height="100dp"
+                    app:actualImageScaleType="center" />
 
                 <View
                     android:id="@+id/line2"
-                    style="@style/line_vertical"></View>
+                    style="@style/line_vertical"/>
 
-                <ImageView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/imgview_small_bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="160dp"
+                    android:layout_height="100dp"
+                    app:actualImageScaleType="center" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -16,10 +16,17 @@
 
     </com.learn.shuip.yayashop.widget.CustomToolbar>
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
     <FrameLayout
+        android:visibility="gone"
         android:id="@+id/realtabcontent"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/bg_color" />
 

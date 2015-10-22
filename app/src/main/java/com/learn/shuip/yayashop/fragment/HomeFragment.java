@@ -21,7 +21,7 @@ import com.learn.shuip.yayashop.adapter.HomeCategoryAdapter;
 import com.learn.shuip.yayashop.bean.Banner;
 import com.learn.shuip.yayashop.bean.Campaign;
 import com.learn.shuip.yayashop.bean.HomeCampaign;
-import com.learn.shuip.yayashop.decoration.DividerDecoration;
+import com.learn.shuip.yayashop.decoration.DividerItemDecortion;
 import com.learn.shuip.yayashop.http.BaseCallback;
 import com.learn.shuip.yayashop.http.OKHttpHelper;
 import com.learn.shuip.yayashop.http.SpotsCallback;
@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.util.List;
 
 import androidUtils.ToastUtils;
-
 
 /**
  * Created by Spd_heshuip on 15/9/25.
@@ -119,7 +118,7 @@ public class HomeFragment extends Fragment {
             }
         });
         mRecycleView.setAdapter(mAdapter);
-        mRecycleView.addItemDecoration(new DividerDecoration());
+        mRecycleView.addItemDecoration(new DividerItemDecortion());
         mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 

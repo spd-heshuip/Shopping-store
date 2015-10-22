@@ -1,7 +1,12 @@
 package com.learn.shuip.yayashop;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +28,13 @@ import com.learn.shuip.yayashop.widget.FragmentTabHost;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,FragmentTabHost.OnTabChangeListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
     private CustomToolbar mCustomToolbar;
+    private ViewPager mViewPager;
 
     private List<Tab> mTabs = new ArrayList<Tab>(5);
 
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         initToolBar();
         initTab();
+        initViewPager();
     }
 
     private void initToolBar(){
@@ -69,7 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         mTabHost.setCurrentTab(0);
+        mTabHost.setOnTabChangedListener(this);
+    }
 
+    private void initViewPager(){
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(new TabFragmentPagerAdapter(getSupportFragmentManager(),mTabs));
+        mViewPager.addOnPageChangeListener(this);
     }
 
     private View buildIndicator(Tab tab){
@@ -81,6 +95,56 @@ public class MainActivity extends AppCompatActivity {
         text.setText(tab.getTitle());
 
         return view;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mViewPager.setCurrentItem(position);
+        mTabHost.setCurrentTab(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onTabChanged(String tabId) {
+        Log.d(TAG,"onTabchanged");
+        int position = mTabHost.getCurrentTab();
+        mViewPager.setCurrentItem(position);
+    }
+
+    static class TabFragmentPagerAdapter extends FragmentPagerAdapter {
+        private List<Tab> mTabs;
+
+        public TabFragmentPagerAdapter(FragmentManager fm,List<Tab> mTabs) {
+            super(fm);
+            this.mTabs = mTabs;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+            try {
+                fragment = (Fragment) mTabs.get(position).getFragment().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return mTabs.size();
+        }
     }
 
     @Override

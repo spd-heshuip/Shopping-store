@@ -25,7 +25,7 @@ package com.learn.shuip.yayashop.widget;
 
 
 
-        import android.content.Context;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;

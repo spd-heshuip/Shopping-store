@@ -5,13 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.learn.shuip.yayashop.R;
 import com.learn.shuip.yayashop.bean.Campaign;
 import com.learn.shuip.yayashop.bean.HomeCampaign;
-import com.squareup.picasso.Picasso;
+import com.learn.shuip.yayashop.http.FrescoHelper;
 
 import java.util.List;
 
@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>{
 
+    private static final String TAG = HomeCategoryAdapter.class.getSimpleName();
     private static final int VIEW_TYPE_L = 0;
     private static final int VIEW_TYPE_R = 1;
 
@@ -41,20 +42,22 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
         mInflater = LayoutInflater.from(viewGroup.getContext());
-        if (type == VIEW_TYPE_L)
-            return new ViewHolder(mInflater.inflate(R.layout.template_home_cardview,viewGroup,false),mDatas,mOnClickListener);
-        else
+        if (type == VIEW_TYPE_L) {
+            return new ViewHolder(mInflater.inflate(R.layout.template_home_cardview, viewGroup, false), mDatas, mOnClickListener);
+        }
+        else{
             return new ViewHolder(mInflater.inflate(R.layout.template_home_cardview2,viewGroup,false),mDatas,mOnClickListener);
+        }
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int positon) {
         HomeCampaign homeCampaign = mDatas.get(positon);
         viewHolder.textTitle.setText(homeCampaign.getTitle());
-        Picasso.with(mContext).load(homeCampaign.getCpOne().getImgUrl()).into(viewHolder.imageViewBig);
-        Picasso.with(mContext).load(homeCampaign.getCpTwo().getImgUrl()).into(viewHolder.imageViewSmallTop);
-        Picasso.with(mContext).load(homeCampaign.getCpThree().getImgUrl()).into(viewHolder.imageViewSmallBottom);
 
+        FrescoHelper.loadImage(homeCampaign.getCpOne().getImgUrl(), viewHolder.imageViewBig);
+        FrescoHelper.loadImage(homeCampaign.getCpTwo().getImgUrl(),viewHolder.imageViewSmallBottom);
+        FrescoHelper.loadImage(homeCampaign.getCpThree().getImgUrl(), viewHolder.imageViewSmallTop);
     }
 
     @Override
@@ -72,9 +75,9 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textTitle;
-        ImageView imageViewBig;
-        ImageView imageViewSmallTop;
-        ImageView imageViewSmallBottom;
+        SimpleDraweeView imageViewBig;
+        SimpleDraweeView imageViewSmallTop;
+        SimpleDraweeView imageViewSmallBottom;
 
         private List<HomeCampaign> data;
         private onCampaignClickListener listener;
@@ -84,9 +87,10 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
             this.data = data;
             this.listener = listener;
             textTitle = (TextView) itemView.findViewById(R.id.text_title);
-            imageViewBig = (ImageView) itemView.findViewById(R.id.imgview_big);
-            imageViewSmallTop = (ImageView) itemView.findViewById(R.id.imgview_small_top);
-            imageViewSmallBottom = (ImageView) itemView.findViewById(R.id.imgview_small_bottom);
+
+            imageViewBig = (SimpleDraweeView) itemView.findViewById(R.id.imgview_big);
+            imageViewSmallTop = (SimpleDraweeView) itemView.findViewById(R.id.imgview_small_top);
+            imageViewSmallBottom = (SimpleDraweeView) itemView.findViewById(R.id.imgview_small_bottom);
 
             imageViewBig.setOnClickListener(this);
             imageViewSmallTop.setOnClickListener(this);
