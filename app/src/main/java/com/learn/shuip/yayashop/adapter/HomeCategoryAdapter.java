@@ -28,9 +28,9 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     private List<HomeCampaign> mDatas;
     private Context mContext;
 
-    private onCampaignClickListener mOnClickListener;
+    private OnItemClickListener mOnClickListener;
 
-    public void setOnCampaignClickListener(onCampaignClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnClickListener = listener;
     }
 
@@ -80,9 +80,9 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         SimpleDraweeView imageViewSmallBottom;
 
         private List<HomeCampaign> data;
-        private onCampaignClickListener listener;
+        private OnItemClickListener listener;
 
-        public ViewHolder(View itemView,List<HomeCampaign> data,onCampaignClickListener listener) {
+        public ViewHolder(View itemView,List<HomeCampaign> data,OnItemClickListener listener) {
             super(itemView);
             this.data = data;
             this.listener = listener;
@@ -117,7 +117,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         }
     }
 
-    public interface onCampaignClickListener{
+    public interface OnItemClickListener {
         void onClick(View view,Campaign campaign);
     }
 }

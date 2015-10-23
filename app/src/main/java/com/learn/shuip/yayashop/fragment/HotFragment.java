@@ -9,21 +9,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.learn.shuip.yayashop.R;
-import com.learn.shuip.yayashop.adapter.HotCategoryAdapter;
+import com.learn.shuip.yayashop.adapter.BaseAdapter;
+import com.learn.shuip.yayashop.adapter.HotWaresAdapter;
 import com.learn.shuip.yayashop.bean.Page;
 import com.learn.shuip.yayashop.bean.Ware;
-import com.learn.shuip.yayashop.decoration.DividerItemDecortion;
+import com.learn.shuip.yayashop.decoration.DividerItemDecoration;
 import com.learn.shuip.yayashop.http.OKHttpHelper;
 import com.learn.shuip.yayashop.http.SpotsCallback;
-import com.learn.shuip.yayashop.system.Contants;
+import com.learn.shuip.yayashop.system.Constant;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.List;
+
+import androidUtils.ToastUtils;
 
 
 /**
@@ -33,7 +37,7 @@ public class HotFragment extends Fragment{
 
     private MaterialRefreshLayout mRefreshLayout;
     private RecyclerView mRecycleView;
-    private HotCategoryAdapter mAdapater;
+    private HotWaresAdapter mAdapater;
     private List<Ware> mDatas;
 
     private static int curPage = 1;
@@ -54,6 +58,9 @@ public class HotFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_hot,container,false);
         mRefreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.refreshLayout);
         mRecycleView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecycleView.setItemAnimator(new DefaultItemAnimator());
+        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         initRefreshLayout();
         initData();
         return view ;
@@ -72,7 +79,6 @@ public class HotFragment extends Fragment{
                 if (curPage <= totalPage){
                     loadMore();
                 }else {
-
                     mRefreshLayout.finishRefreshLoadMore();
                 }
             }
@@ -92,7 +98,7 @@ public class HotFragment extends Fragment{
     }
 
     private void initData(){
-        String url = Contants.API.WARES + "?curPage=" + curPage + "&pageSize=" + pageSize;
+        String url = Constant.API.WARES + "?curPage=" + curPage + "&pageSize=" + pageSize;
         mHttpClient.get(url, new SpotsCallback<Page<Ware>>(getActivity()) {
             @Override
             public void onSuccess(Response response, Page<Ware> warePage) {
@@ -112,12 +118,16 @@ public class HotFragment extends Fragment{
     private void showData(){
         switch (state){
             case STATE_NORMAL:
-                mAdapater = new HotCategoryAdapter(mDatas);
+                mAdapater = new HotWaresAdapter(getContext(),mDatas);
                 mRecycleView.setAdapter(mAdapater);
+                mAdapater.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        ToastUtils.show(getContext(), "position:" + position + "click!", Toast.LENGTH_SHORT);
+                    }
+                });
 
-                mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-                mRecycleView.addItemDecoration(new DividerItemDecortion());
-                mRecycleView.setItemAnimator(new DefaultItemAnimator());
+
                 break;
             case  STATE_REFREH:
                 mAdapater.clearData();

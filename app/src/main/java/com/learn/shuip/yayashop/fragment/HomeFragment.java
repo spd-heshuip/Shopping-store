@@ -3,6 +3,7 @@ package com.learn.shuip.yayashop.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,17 +16,16 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.google.gson.Gson;
 import com.learn.shuip.yayashop.R;
 import com.learn.shuip.yayashop.adapter.HomeCategoryAdapter;
 import com.learn.shuip.yayashop.bean.Banner;
 import com.learn.shuip.yayashop.bean.Campaign;
 import com.learn.shuip.yayashop.bean.HomeCampaign;
-import com.learn.shuip.yayashop.decoration.DividerItemDecortion;
+import com.learn.shuip.yayashop.decoration.DividerItemDecoration;
 import com.learn.shuip.yayashop.http.BaseCallback;
 import com.learn.shuip.yayashop.http.OKHttpHelper;
 import com.learn.shuip.yayashop.http.SpotsCallback;
-import com.learn.shuip.yayashop.system.Contants;
+import com.learn.shuip.yayashop.system.Constant;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -40,7 +40,6 @@ import androidUtils.ToastUtils;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
-    private Gson mGson = new Gson();
     private SliderLayout mSliderShow;
 
     private RecyclerView mRecycleView;
@@ -79,7 +78,7 @@ public class HomeFragment extends Fragment {
     private void initRecycleView(View view) {
         mRecycleView = (RecyclerView) view.findViewById(R.id.recyclerview);
 
-        mHttpHelper.get(Contants.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>() {
+        mHttpHelper.get(Constant.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>() {
 
             @Override
             public void onBeforeRequest(Request request) {
@@ -111,14 +110,15 @@ public class HomeFragment extends Fragment {
 
     private void initRecycleViewData(List<HomeCampaign> datas) {
         mAdapter = new HomeCategoryAdapter(datas, getActivity());
-        mAdapter.setOnCampaignClickListener(new HomeCategoryAdapter.onCampaignClickListener() {
+        mAdapter.setOnItemClickListener(new HomeCategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, Campaign campaign) {
                 Toast.makeText(getContext(), "title=" + campaign.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
         mRecycleView.setAdapter(mAdapter);
-        mRecycleView.addItemDecoration(new DividerItemDecortion());
+        mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
