@@ -5,7 +5,7 @@ package com.learn.shuip.yayashop.bean;
  */
 public class Category extends BaseBean{
 
-    private String name;
+    protected String name;
 
     public Category(){
 

@@ -1,15 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_category"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="2dp">
+
+        <com.daimajia.slider.library.SliderLayout
+            android:id="@+id/slider_catogory"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:pager_animation="Accordion"
+            app:auto_cycle="true"
+            app:indicator_visibility="visible"
+            app:pager_animation_span="1100"/>
+
+        <com.cjj.MaterialRefreshLayout
+            android:id="@+id/refreshLayout_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:overlay="false"
+            app:progress_colors="@array/material_colors"
+            app:wave_color="#90ffffff"
+            app:wave_height_type="higher"
+            app:wave_show="false"
+            app:progress_show_circle_backgroud="false">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_commodity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backColor">
+
+            </android.support.v7.widget.RecyclerView>
 
 
+        </com.cjj.MaterialRefreshLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Cagory"/>
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * Created by Administrator on 15-10-22.
  */
-public abstract class BaseAdapter<T,H extends BaseViewHolder> extends RecyclerView.Adapter<BaseViewHolder>{
+public abstract class BaseAdapter<T,H extends BaseViewHolder> extends
+        RecyclerView.Adapter<BaseViewHolder>{
 
     protected List<T> mDatas;
     protected Context mContext;

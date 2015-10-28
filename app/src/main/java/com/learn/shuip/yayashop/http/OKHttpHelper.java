@@ -2,6 +2,7 @@ package com.learn.shuip.yayashop.http;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -21,9 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class OKHttpHelper {
 
+    private static final String TAG = OKHttpHelper.class.getSimpleName();
     private static OKHttpHelper mInstance;
-
-
     private OkHttpClient mHttpClient;
     private Gson mGson;
     private Handler mHandler;
@@ -81,6 +81,7 @@ public class OKHttpHelper {
                 baseCallback.onResponse(response);
                 if (response.isSuccessful()) {
                     String result = response.body().string();
+                    Log.d(TAG,result);
                     if (baseCallback.type == String.class) {
                         callbackSuccess(baseCallback, response, result);
                     } else {

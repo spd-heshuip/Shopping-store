@@ -11,5 +11,11 @@ public class Constant {
         public static final String CAMPAIGN_HOME=BASE_URL + "campaign/recommend";
 
         public static final String WARES = BASE_URL + "wares/hot";
+
+        public static final String CategoryList = BASE_URL + "category/list";
+
+        public static final String WARES_LIST=BASE_URL +"wares/list";
+
+        public static final String BANNER=BASE_URL +"banner/query";
     }
 }

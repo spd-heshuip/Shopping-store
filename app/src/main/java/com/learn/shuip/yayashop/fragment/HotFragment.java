@@ -58,12 +58,17 @@ public class HotFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_hot,container,false);
         mRefreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.refreshLayout);
         mRecycleView = (RecyclerView) view.findViewById(R.id.recyclerview);
-        mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        mRecycleView.setItemAnimator(new DefaultItemAnimator());
-        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        initRecycleView();
         initRefreshLayout();
         initData();
         return view ;
+    }
+
+    private void initRecycleView(){
+        mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecycleView.setItemAnimator(new DefaultItemAnimator());
+        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initRefreshLayout() {
@@ -99,7 +104,7 @@ public class HotFragment extends Fragment{
 
     private void initData(){
         String url = Constant.API.WARES + "?curPage=" + curPage + "&pageSize=" + pageSize;
-        mHttpClient.get(url, new SpotsCallback<Page<Ware>>(getActivity()) {
+        mHttpClient.get(url, new SpotsCallback<Page<Ware>>(getContext()) {
             @Override
             public void onSuccess(Response response, Page<Ware> warePage) {
                 mDatas = warePage.getList();
@@ -126,7 +131,6 @@ public class HotFragment extends Fragment{
                         ToastUtils.show(getContext(), "position:" + position + "click!", Toast.LENGTH_SHORT);
                     }
                 });
-
 
                 break;
             case  STATE_REFREH:
