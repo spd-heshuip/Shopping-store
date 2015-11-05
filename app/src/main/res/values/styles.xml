@@ -97,5 +97,10 @@
         <item name="android:textColor">@color/grey_btn_text_color</item>
         <item name="android:background">@drawable/bg_btn_style_grey</item>
     </style>
+    
+    <style name="customCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_checkbox_style</item>
+    </style>
+
 
 </resources>

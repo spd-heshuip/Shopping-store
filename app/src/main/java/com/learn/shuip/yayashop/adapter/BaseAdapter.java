@@ -64,9 +64,13 @@ public abstract class BaseAdapter<T,H extends BaseViewHolder> extends
     }
 
     public void clearData(){
+        if (mDatas == null)
+            return;
         int count = mDatas.size();
-        mDatas.clear();
-        notifyItemRangeRemoved(0,count);
+        if (count > 0){
+            mDatas.clear();
+            notifyItemRangeRemoved(0,count);
+        }
     }
 
     public void addData(List<T> datas){
@@ -81,6 +85,8 @@ public abstract class BaseAdapter<T,H extends BaseViewHolder> extends
     }
 
     public void addData(int position,List<T> datas){
+        if (mDatas == null)
+            return;
         if (datas != null && datas.size() > 0){
             mDatas.addAll(datas);
             notifyItemRangeChanged(position, datas.size());

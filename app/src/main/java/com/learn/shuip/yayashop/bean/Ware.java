@@ -17,7 +17,7 @@ public class Ware implements Serializable{
 
     private Float price;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

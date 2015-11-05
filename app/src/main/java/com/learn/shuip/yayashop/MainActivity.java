@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +32,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private static final String TAG = MainActivity.class.getSimpleName();
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
+
     private CustomToolbar mCustomToolbar;
     private ViewPager mViewPager;
+
+    private CartFragment mCartFragment;
 
     private List<Tab> mTabs = new ArrayList<Tab>(5);
 
@@ -115,9 +117,28 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onTabChanged(String tabId) {
-        Log.d(TAG,"onTabchanged");
         int position = mTabHost.getCurrentTab();
         mViewPager.setCurrentItem(position);
+
+        if (tabId == getString(R.string.cart)){
+            if (mCartFragment == null){
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tabId);
+                if (fragment != null){
+                    mCartFragment = (CartFragment) fragment;
+                    mCartFragment.refreshData();
+                }
+            }else {
+                mCustomToolbar.hideSearchView();
+                mCustomToolbar.setTitle(R.string.cart);
+                mCustomToolbar.getRightButton().setVisibility(View.VISIBLE);
+//                mCartFragment.refreshData();
+            }
+        }else {
+            mCustomToolbar.showSearchView();
+            mCustomToolbar.hideTitleView();
+            mCustomToolbar.getRightButton().setVisibility(View.GONE);
+        }
+
     }
 
     static class TabFragmentPagerAdapter extends FragmentPagerAdapter {

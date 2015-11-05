@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cjj.MaterialRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:overlay="true"
-    app:progress_colors="@array/material_colors"
-    app:wave_height_type="higher"
-    app:wave_show="false">
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <com.cjj.MaterialRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/backColor">
+        android:layout_height="match_parent"
+        app:overlay="true"
+        app:progress_colors="@array/material_colors"
+        app:wave_height_type="higher"
+        app:wave_show="false">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backColor">
+
+        </android.support.v7.widget.RecyclerView>
 
 
-</com.cjj.MaterialRefreshLayout>
+    </com.cjj.MaterialRefreshLayout>
+</LinearLayout>
+
 

@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,7 +27,12 @@ public class CustomToolbar extends Toolbar{
 
     private EditText mSearchView;
     private TextView mTextTitle;
-    private ImageButton mRightButton;
+    private Button mRightButton;
+
+    public Button getRightButton() {
+        return mRightButton;
+    }
+
     private ImageButton mLeftButton;
     private View mView;
 
@@ -71,7 +77,7 @@ public class CustomToolbar extends Toolbar{
 
             mTextTitle = (TextView) mView.findViewById(R.id.toolbar_title);
             mSearchView = (EditText) mView.findViewById(R.id.toolbar_searchview);
-            mRightButton = (ImageButton) mView.findViewById(R.id.toolbar_rightButton);
+            mRightButton = (Button) mView.findViewById(R.id.toolbar_rightButton);
             mLeftButton = (ImageButton) mView.findViewById(R.id.toolbar_leftButton);
 
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
@@ -82,7 +88,7 @@ public class CustomToolbar extends Toolbar{
 
     public void  setRightButtonIcon(Drawable icon){
         if(mRightButton !=null){
-            mRightButton.setImageDrawable(icon);
+            mRightButton.setBackground(icon);
             mRightButton.setVisibility(VISIBLE);
         }
     }

@@ -33,20 +33,24 @@ import androidUtils.ToastUtils;
 /**
  * Created by Ivan on 15/9/22.
  */
-public class HotFragment extends Fragment{
+public class HotFragment extends Fragment {
+
+    private static final String TAG = HotFragment.class.getSimpleName();
 
     private MaterialRefreshLayout mRefreshLayout;
     private RecyclerView mRecycleView;
     private HotWaresAdapter mAdapater;
     private List<Ware> mDatas;
 
+    private View rootView;
+
     private static int curPage = 1;
     private static int totalPage = 1;
     private static int pageSize = 10;
 
-    private  static final int STATE_NORMAL=0;
-    private  static final int STATE_REFREH=1;
-    private  static final int STATE_MORE=2;
+    private static final int STATE_NORMAL = 0;
+    private static final int STATE_REFREH = 1;
+    private static final int STATE_MORE = 2;
 
     private int state = STATE_NORMAL;
 
@@ -55,17 +59,33 @@ public class HotFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_hot,container,false);
-        mRefreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.refreshLayout);
-        mRecycleView = (RecyclerView) view.findViewById(R.id.recyclerview);
+
+//        Log.d(TAG, "onCreateView");
+        rootView = inflater.inflate(R.layout.fragment_hot, container, false);
+
+        mRefreshLayout = (MaterialRefreshLayout) rootView.findViewById(R.id.refreshLayout);
+        mRecycleView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
 
         initRecycleView();
         initRefreshLayout();
-        initData();
-        return view ;
+        requestData();
+        return rootView;
     }
 
-    private void initRecycleView(){
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        Log.d(TAG, "onDestroyView");
+        mDatas = null;
+        mAdapater = null;
+    }
+
+    private void initRecycleView() {
         mRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -81,28 +101,28 @@ public class HotFragment extends Fragment{
 
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
-                if (curPage <= totalPage){
+                if (curPage <= totalPage) {
                     loadMore();
-                }else {
+                } else {
                     mRefreshLayout.finishRefreshLoadMore();
                 }
             }
         });
     }
 
-    private void refreshData(){
+    private void refreshData() {
         curPage = 1;
         state = STATE_REFREH;
-        initData();
+        requestData();
     }
 
-    private void loadMore(){
+    private void loadMore() {
         curPage++;
         state = STATE_MORE;
-        initData();
+        requestData();
     }
 
-    private void initData(){
+    private void requestData() {
         String url = Constant.API.WARES + "?curPage=" + curPage + "&pageSize=" + pageSize;
         mHttpClient.get(url, new SpotsCallback<Page<Ware>>(getContext()) {
             @Override
@@ -120,27 +140,33 @@ public class HotFragment extends Fragment{
         });
     }
 
-    private void showData(){
-        switch (state){
+    private void showData() {
+        switch (state) {
             case STATE_NORMAL:
-                mAdapater = new HotWaresAdapter(getContext(),mDatas);
-                mRecycleView.setAdapter(mAdapater);
-                mAdapater.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        ToastUtils.show(getContext(), "position:" + position + "click!", Toast.LENGTH_SHORT);
-                    }
-                });
-
+                if (mAdapater == null) {
+                    mAdapater = new HotWaresAdapter(getContext(), mDatas);
+                    mRecycleView.setAdapter(mAdapater);
+                    mAdapater.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            ToastUtils.show(getContext(), "position:" + position + "click!", Toast.LENGTH_SHORT);
+                        }
+                    });
+                } else {
+                    mAdapater.clearData();
+                    mAdapater.addData(mDatas);
+                    mRecycleView.setAdapter(mAdapater);
+                }
                 break;
-            case  STATE_REFREH:
+            case STATE_REFREH:
                 mAdapater.clearData();
                 mAdapater.addData(mDatas);
+                mRecycleView.setAdapter(mAdapater);
                 mRecycleView.scrollToPosition(0);
                 mRefreshLayout.finishRefresh();
                 break;
             case STATE_MORE:
-                mAdapater.addData(mAdapater.getDatas().size(),mDatas);
+                mAdapater.addData(mAdapater.getDatas().size(), mDatas);
                 mRecycleView.scrollToPosition(mAdapater.getDatas().size());
                 mRefreshLayout.finishRefreshLoadMore();
                 break;

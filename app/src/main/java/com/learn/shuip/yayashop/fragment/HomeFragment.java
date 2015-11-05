@@ -47,15 +47,33 @@ public class HomeFragment extends Fragment {
     private List<Banner> mBanners;
     private OKHttpHelper mHttpHelper;
 
+    private View rootView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mHttpHelper = OKHttpHelper.getInstance();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mSliderShow = (SliderLayout) view.findViewById(R.id.slider);
-        mHttpHelper = OKHttpHelper.getInstance();
-        requestImages();
-        initRecycleView(view);
-        return view;
+
+        if (rootView == null){
+            rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+            mSliderShow = (SliderLayout) rootView.findViewById(R.id.slider);
+            initRecycleView(rootView);
+            initSliderView();
+
+            requestImages();
+        }
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null){
+            parent.removeView(rootView);
+        }
+
+        return rootView;
     }
 
     private void requestImages() {
@@ -65,7 +83,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(Response response, List<Banner> banners) {
                 mBanners = banners;
-                initSliderView();
+                addSlider();
             }
 
             @Override
@@ -77,6 +95,9 @@ public class HomeFragment extends Fragment {
 
     private void initRecycleView(View view) {
         mRecycleView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mRecycleView.setItemAnimator(new DefaultItemAnimator());
+        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mHttpHelper.get(Constant.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>() {
 
@@ -117,12 +138,10 @@ public class HomeFragment extends Fragment {
             }
         });
         mRecycleView.setAdapter(mAdapter);
-        mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
-        mRecycleView.setItemAnimator(new DefaultItemAnimator());
-        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
 
-    private void initSliderView() {
+    private void addSlider() {
         if (mBanners != null) {
             for (Banner banner : mBanners) {
                 TextSliderView textSliderView = new TextSliderView(this.getActivity());
@@ -132,6 +151,9 @@ public class HomeFragment extends Fragment {
                 mSliderShow.addSlider(textSliderView);
             }
         }
+    }
+
+    private void initSliderView(){
         mSliderShow.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 
         mSliderShow.setCustomAnimation(new DescriptionAnimation());

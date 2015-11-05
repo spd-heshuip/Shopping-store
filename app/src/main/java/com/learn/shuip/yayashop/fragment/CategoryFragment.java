@@ -6,7 +6,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +66,8 @@ public class CategoryFragment extends Fragment {
     private CategoryListAdapter mCategoryListAdapter;
     private WaresAdapter mWaresAdapter;
 
+    private View rootView;
+
     private static int curPage = 1;
     private static int totalPage = 1;
     private static int pageSize = 10;
@@ -80,18 +81,19 @@ public class CategoryFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_category, container, false);
-        ViewUtils.inject(this, view);
+        rootView = inflater.inflate(R.layout.fragment_category, container, false);
+        ViewUtils.inject(this, rootView);
 
         initRecycleView();
+        initRefreshLayout();
+
         requestCategoryData();
         requestBannerData();
 
-        initRefreshLayout();
-        return view;
+        return rootView;
     }
 
-    private void initRecycleView(){
+    private void initRecycleView() {
         mRecycleView_commodity.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecycleView_commodity.setItemAnimator(new DefaultItemAnimator());
         mRecycleView_commodity.addItemDecoration(new DividerGridItemDecoration(getContext()));
@@ -251,8 +253,6 @@ public class CategoryFragment extends Fragment {
             public void onSuccess(Response response, Page<Ware> waresPage) {
                 curPage = waresPage.getCurrentPage();
                 totalPage = waresPage.getTotalPage();
-                String listString = mGson.toJson(waresPage.getList());
-                Log.d(TAG,"listString = " + listString);
                 showWaresData(waresPage.getList());
             }
 
@@ -273,8 +273,7 @@ public class CategoryFragment extends Fragment {
 
                     mRecycleView_commodity.setAdapter(mWaresAdapter);
 
-                }
-                else {
+                } else {
                     mWaresAdapter.clearData();
                     mWaresAdapter.addData(wares);
 

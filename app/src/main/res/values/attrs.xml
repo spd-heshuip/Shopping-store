@@ -4,4 +4,15 @@
         <attr name="rightButtonIcon" format="reference"/>
         <attr name="isShowSearchView" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomAddSubNumberView">
+
+        <attr name="value" format="integer|reference"/>
+        <attr name="maxvalue" format="integer|reference"/>
+        <attr name="minvalue" format="integer|reference"/>
+        <attr name="numberTextBackground" format="reference"/>
+        <attr name="addButtonBackground" format="reference"/>
+        <attr name="subButtonBackground" format="reference"/>
+
+    </declare-styleable>
 </resources>
