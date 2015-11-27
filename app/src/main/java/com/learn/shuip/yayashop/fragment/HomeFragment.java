@@ -1,8 +1,8 @@
 package com.learn.shuip.yayashop.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +17,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.learn.shuip.yayashop.R;
+import com.learn.shuip.yayashop.WareListActivity;
 import com.learn.shuip.yayashop.adapter.HomeCategoryAdapter;
 import com.learn.shuip.yayashop.bean.Banner;
 import com.learn.shuip.yayashop.bean.Campaign;
@@ -37,14 +38,13 @@ import androidUtils.ToastUtils;
 /**
  * Created by Spd_heshuip on 15/9/25.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     private static final String TAG = "HomeFragment";
     private SliderLayout mSliderShow;
 
     private RecyclerView mRecycleView;
     private HomeCategoryAdapter mAdapter;
-    private List<Banner> mBanners;
     private OKHttpHelper mHttpHelper;
 
     private View rootView;
@@ -82,8 +82,7 @@ public class HomeFragment extends Fragment {
         mHttpHelper.get(url, new SpotsCallback<List<Banner>>(getActivity()) {
             @Override
             public void onSuccess(Response response, List<Banner> banners) {
-                mBanners = banners;
-                addSlider();
+                addSlider(banners);
             }
 
             @Override
@@ -95,6 +94,7 @@ public class HomeFragment extends Fragment {
 
     private void initRecycleView(View view) {
         mRecycleView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        mRecycleView.setHasFixedSize(true);
         mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -125,6 +125,11 @@ public class HomeFragment extends Fragment {
             public void onError(Response response, int code, IOException e) {
                 ToastUtils.show(getActivity(), "无法连接到服务器，请检查网络设置", Toast.LENGTH_SHORT);
             }
+
+            @Override
+            public void onTokenError(Response response, int code) {
+
+            }
         });
 
     }
@@ -134,16 +139,19 @@ public class HomeFragment extends Fragment {
         mAdapter.setOnItemClickListener(new HomeCategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, Campaign campaign) {
-                Toast.makeText(getContext(), "title=" + campaign.getTitle(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getActivity(), WareListActivity.class);
+                intent.putExtra(Constant.CAMPAIGN_ID,campaign.getId());
+                startActivity(intent);
             }
         });
         mRecycleView.setAdapter(mAdapter);
 
     }
 
-    private void addSlider() {
-        if (mBanners != null) {
-            for (Banner banner : mBanners) {
+    private void addSlider(List<Banner> banners) {
+        if (banners != null) {
+            for (Banner banner : banners) {
                 TextSliderView textSliderView = new TextSliderView(this.getActivity());
                 textSliderView.image(banner.getImgUrl());
                 textSliderView.description(banner.getName());

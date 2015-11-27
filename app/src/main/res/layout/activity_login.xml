@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.learn.shuip.yayashop.widget.CustomToolbar
+        android:id="@+id/toolbar_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:isShowSearchView="false"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        >
+
+    </com.learn.shuip.yayashop.widget.CustomToolbar>
+
+    <com.learn.shuip.yayashop.widget.CustomEditText
+        android:id="@+id/phone_edit"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/phone"
+        android:drawablePadding="10dp"
+        android:hint="@string/phone_hint"
+        android:inputType="phone"
+        style="@style/customEditText"/>
+
+    <View
+        style="@style/line_vertical"/>
+
+    <com.learn.shuip.yayashop.widget.CustomEditText
+        android:id="@+id/passwd_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@drawable/passwd"
+        android:drawablePadding="10dp"
+        android:hint="@string/passwd_hint"
+        android:inputType="textPassword"
+        style="@style/customEditText"/>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/login"
+        style="@style/bigRedButton"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="bottom"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/register"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/blue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/register"/>
+
+        <TextView
+            android:id="@+id/forget_text"
+            android:gravity="end"
+            android:textColor="@color/blue"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/forget_pass"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,25 +8,29 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.learn.shuip.yayashop.MainActivity;
 import com.learn.shuip.yayashop.R;
 import com.learn.shuip.yayashop.bean.ShoppingCart;
 import com.learn.shuip.yayashop.http.FrescoHelper;
+import com.learn.shuip.yayashop.util.CartProvider;
 import com.learn.shuip.yayashop.widget.CustomAddSubNumberView;
 
 import java.util.Iterator;
 import java.util.List;
-
-import androidUtils.CartProvider;
 
 /**
  * Created by Administrator on 15-10-29.
  */
 public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdapter.OnItemClickListener{
 
+    private static final String TAG = CartAdapter.class.getSimpleName();
+
     private CheckBox mCheckBox;
     private TextView mTotalText;
     private List<ShoppingCart> mDatas;
     private CartProvider mCartProvider;
+
+    private MainActivity mActivity;
 
     public CartAdapter(Context context, List<ShoppingCart> datas,CheckBox checkBox,TextView textView) {
         super(context, datas, R.layout.template_cart_adapterview);
@@ -34,7 +38,11 @@ public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdap
         this.mCheckBox = checkBox;
         this.mTotalText = textView;
         this.mDatas = datas;
-        mCartProvider = new CartProvider(context);
+
+        if (context instanceof MainActivity)
+            mActivity = (MainActivity) context;
+
+        mCartProvider = CartProvider.getInstance();
 
         mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +75,6 @@ public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdap
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 item.setIsChecked(isChecked);
-                mCartProvider.update(item);
 
                 checkListen();
                 showTotalPrice();
@@ -79,6 +86,7 @@ public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdap
             public void onAddButtonClick(View view, int value) {
                 item.setCount(value);
                 mCartProvider.update(item);
+                mActivity.setCartBadge(mCartProvider.getCartNumber());
                 showTotalPrice();
             }
 
@@ -86,6 +94,7 @@ public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdap
             public void onSubButtonClick(View view, int value) {
                 item.setCount(value);
                 mCartProvider.update(item);
+                mActivity.setCartBadge(mCartProvider.getCartNumber());
                 showTotalPrice();
             }
         });
@@ -138,23 +147,16 @@ public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdap
     }
 
     public void delCartItem(){
-//        for (ShoppingCart cart : mDatas){
-//            if (cart.isChecked()){
-//                int position = mDatas.indexOf(cart);
-//                mDatas.remove(cart);
-//                mCartProvider.delete(cart);
-//                notifyItemRemoved(position);
-//            }
-//        }
 
         if (mDatas == null || mDatas.size() < 0)
             return;
+        int position;
         for (Iterator iterator = mDatas.iterator();iterator.hasNext();){
             ShoppingCart cart = (ShoppingCart)iterator.next();
             if (cart.isChecked()){
-                int position = mDatas.indexOf(cart);
-                iterator.remove();
+                position = mDatas.indexOf(cart);
                 mCartProvider.delete(cart);
+                iterator.remove();
                 notifyItemRemoved(position);
             }
         }

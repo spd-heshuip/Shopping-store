@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.learn.shuip.yayashop.R;
@@ -33,7 +32,7 @@ public class CustomToolbar extends Toolbar{
         return mRightButton;
     }
 
-    private ImageButton mLeftButton;
+    private Button mLeftButton;
     private View mView;
 
     private TintManager mTintManager;
@@ -78,7 +77,7 @@ public class CustomToolbar extends Toolbar{
             mTextTitle = (TextView) mView.findViewById(R.id.toolbar_title);
             mSearchView = (EditText) mView.findViewById(R.id.toolbar_searchview);
             mRightButton = (Button) mView.findViewById(R.id.toolbar_rightButton);
-            mLeftButton = (ImageButton) mView.findViewById(R.id.toolbar_leftButton);
+            mLeftButton = (Button) mView.findViewById(R.id.toolbar_leftButton);
 
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
             addView(mView, lp);
@@ -89,6 +88,13 @@ public class CustomToolbar extends Toolbar{
     public void  setRightButtonIcon(Drawable icon){
         if(mRightButton !=null){
             mRightButton.setBackground(icon);
+            mRightButton.setVisibility(VISIBLE);
+        }
+    }
+
+    public void setRightButtonIcon(int id){
+        if (mRightButton != null){
+            mRightButton.setBackgroundResource(id);
             mRightButton.setVisibility(VISIBLE);
         }
     }
@@ -120,7 +126,7 @@ public class CustomToolbar extends Toolbar{
         initView();
         if (mLeftButton != null){
             if (icon != null){
-                mLeftButton.setImageDrawable(icon);
+                mLeftButton.setBackground(icon);
                 mLeftButton.setVisibility(View.VISIBLE);
             }
         }

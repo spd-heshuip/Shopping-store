@@ -1,15 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="?attr/colorPrimary">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/head"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFFFFF"/>
 
+        <TextView
+            android:id="@+id/txt_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="9dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="@string/touch_login"/>
+
+    </FrameLayout>
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Mine"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableStart="@drawable/order"
+        android:drawableEnd="@drawable/forward"
+        android:text="@string/myOrder"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/defaultTextColor"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableStart="@drawable/collect"
+        android:drawableEnd="@drawable/forward"
+        android:text="@string/collect"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/defaultTextColor"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableStart="@drawable/address"
+        android:drawableEnd="@drawable/forward"
+        android:text="@string/address"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/defaultTextColor"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableStart="@drawable/logistics"
+        android:drawableEnd="@drawable/forward"
+        android:text="@string/logistics"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/defaultTextColor"/>
+
+    <Button
+        android:id="@+id/logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        style="@style/bigRedButton"
+        android:visibility="invisible"
+        android:text="@string/logout"/>
+
+
+
+
+
 
 </LinearLayout>

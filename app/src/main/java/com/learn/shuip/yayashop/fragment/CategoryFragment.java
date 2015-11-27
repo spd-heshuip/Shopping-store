@@ -1,7 +1,6 @@
 package com.learn.shuip.yayashop.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +43,7 @@ import java.util.List;
 /**
  * Created by Ivan on 15/9/22.
  */
-public class CategoryFragment extends Fragment {
+public class CategoryFragment extends BaseFragment {
 
     private static final String TAG = CategoryFragment.class.getSimpleName();
     private Gson mGson = new Gson();
@@ -94,10 +93,12 @@ public class CategoryFragment extends Fragment {
     }
 
     private void initRecycleView() {
+        mRecycleView_commodity.setHasFixedSize(true);
         mRecycleView_commodity.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecycleView_commodity.setItemAnimator(new DefaultItemAnimator());
         mRecycleView_commodity.addItemDecoration(new DividerGridItemDecoration(getContext()));
 
+        mRecycleView_category.setHasFixedSize(true);
         mRecycleView_category.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycleView_category.setItemAnimator(new DefaultItemAnimator());
         mRecycleView_category.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
@@ -258,6 +259,11 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public void onError(Response response, int code, IOException e) {
+
+            }
+
+            @Override
+            public void onTokenError(Response response, int code) {
 
             }
         });

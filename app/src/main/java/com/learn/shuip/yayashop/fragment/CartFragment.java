@@ -3,7 +3,6 @@ package com.learn.shuip.yayashop.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,7 @@ import com.learn.shuip.yayashop.R;
 import com.learn.shuip.yayashop.adapter.CartAdapter;
 import com.learn.shuip.yayashop.bean.ShoppingCart;
 import com.learn.shuip.yayashop.decoration.DividerItemDecoration;
+import com.learn.shuip.yayashop.util.CartProvider;
 import com.learn.shuip.yayashop.widget.CustomToolbar;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -26,13 +26,13 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.util.List;
 
-import androidUtils.CartProvider;
-
 
 /**
- * Created by Ivan on 15/9/22.
+ * Created by Tracy on 15/9/22.
  */
-public class CartFragment extends Fragment{
+public class CartFragment extends BaseFragment{
+
+    private static final String TAG = CartFragment.class.getSimpleName();
 
     private static final int ACTION_EDIT = 1;
     private static final int ACTION_COMPLETE = 2;
@@ -66,16 +66,17 @@ public class CartFragment extends Fragment{
             rootView = inflater.inflate(R.layout.fragment_cart,container,false);
 
             ViewUtils.inject(this, rootView);
+
             initRecycleView();
 
-            mCartProvider = new CartProvider(getContext());
+            mCartProvider = CartProvider.getInstance();
         }
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null){
             parent.removeView(rootView);
         }
-
         showData();
+        hideEditControl();
         return rootView;
     }
 
@@ -87,12 +88,18 @@ public class CartFragment extends Fragment{
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     @OnClick(R.id.btn_delete)
     public void delCart(View view){
         mAdapter.delCartItem();
     }
 
     private void initRecycleView(){
+        mRecycleView.setHasFixedSize(true);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
@@ -100,6 +107,7 @@ public class CartFragment extends Fragment{
 
     private void showData(){
         List<ShoppingCart> datas = mCartProvider.getAll();
+
         mAdapter = new CartAdapter(getContext(),datas,mCheckAll,mTextTotal);
 
         mRecycleView.setAdapter(mAdapter);
@@ -134,11 +142,13 @@ public class CartFragment extends Fragment{
         mToolBar.getRightButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tag = (int) v.getTag();
-                if (tag == ACTION_EDIT){
-                    showDelControl();
-                }else if (tag == ACTION_COMPLETE){
-                    hideEditControl();
+                if (v.getId() == R.id.toolbar_rightButton){
+                    int tag = (int) v.getTag();
+                    if (tag == ACTION_EDIT){
+                        showDelControl();
+                    }else if (tag == ACTION_COMPLETE){
+                        hideEditControl();
+                    }
                 }
             }
         });
@@ -150,7 +160,8 @@ public class CartFragment extends Fragment{
         mToolBar.getRightButton().setTag(ACTION_COMPLETE);
 
         mTextTotal.setText("");
-        mButtonSettlement.setVisibility(View.INVISIBLE);
+        mButtonSettlement.setVisibility(View.GONE);
+
         mButtonDelete.setVisibility(View.VISIBLE);
         mAdapter.checkAll_None(false);
         mCheckAll.setChecked(false);

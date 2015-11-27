@@ -1,5 +1,8 @@
 package com.learn.shuip.yayashop.adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -99,21 +102,33 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         }
 
         @Override
-        public void onClick(View v) {
-            HomeCampaign homeCampaign = data.get(getLayoutPosition());
+        public void onClick(View view) {
             if (listener != null){
-                switch (v.getId()){
-                    case R.id.imgview_big:
-                        listener.onClick(v, homeCampaign.getCpOne());
-                        break;
-                    case R.id.imgview_small_top:
-                        listener.onClick(v, homeCampaign.getCpTwo());
-                        break;
-                    case R.id.imgview_small_bottom:
-                        listener.onClick(v, homeCampaign.getCpThree());
-                        break;
-                }
+                anim(view);
             }
+        }
+
+        private void anim(final View view){
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view,"alpha",1.0F,0.5F,1.0F)
+                    .setDuration(500);
+            objectAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    HomeCampaign homeCampaign = data.get(getLayoutPosition());
+                    switch (view.getId()){
+                        case R.id.imgview_big:
+                            listener.onClick(view, homeCampaign.getCpOne());
+                            break;
+                        case R.id.imgview_small_top:
+                            listener.onClick(view, homeCampaign.getCpTwo());
+                            break;
+                        case R.id.imgview_small_bottom:
+                            listener.onClick(view, homeCampaign.getCpThree());
+                            break;
+                    }
+                }
+            });
+            objectAnimator.start();
         }
     }
 

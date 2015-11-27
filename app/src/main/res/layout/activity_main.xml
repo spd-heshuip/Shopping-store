@@ -30,10 +30,11 @@
         android:layout_weight="1"
         android:background="@color/bg_color" />
 
-    <com.learn.shuip.yayashop.widget.FragmentTabHost
+
+    <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
         <FrameLayout
@@ -42,6 +43,6 @@
             android:layout_height="0dp"
             android:layout_weight="0" />
 
-    </com.learn.shuip.yayashop.widget.FragmentTabHost>
+    </android.support.v4.app.FragmentTabHost>
 
 </LinearLayout>

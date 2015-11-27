@@ -1,12 +1,18 @@
 package com.learn.shuip.yayashop.http;
 
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
+import com.learn.shuip.yayashop.LoginActivity;
+import com.learn.shuip.yayashop.R;
+import com.learn.shuip.yayashop.system.ShopApplication;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import androidUtils.ToastUtils;
 import dmax.dialog.SpotsDialog;
 
 /**
@@ -53,5 +59,13 @@ public abstract class SpotsCallback<T> extends BaseCallback<T>{
         hideDialog();
     }
 
+    @Override
+    public void onTokenError(Response response, int code) {
+        ToastUtils.show(mContext, R.string.token_error, Toast.LENGTH_SHORT);
 
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        mContext.startActivity(intent);
+
+        ShopApplication.getInstance().clearUser();
+    }
 }

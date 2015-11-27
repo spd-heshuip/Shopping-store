@@ -7,30 +7,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.learn.shuip.yayashop.MainActivity;
 import com.learn.shuip.yayashop.R;
-import com.learn.shuip.yayashop.bean.ShoppingCart;
 import com.learn.shuip.yayashop.bean.Ware;
 import com.learn.shuip.yayashop.http.FrescoHelper;
+import com.learn.shuip.yayashop.util.CartProvider;
 
 import java.util.List;
 
-import androidUtils.CartProvider;
 import androidUtils.ToastUtils;
 
 /**
  * Created by Administrator on 15-10-22.
  */
-public class HotWaresAdapter extends SimpleAdapter<Ware>{
+public class HotWaresAdapter extends SimpleAdapter<Ware> {
 
     private static final String TAG = HotWaresAdapter.class.getSimpleName();
 
     private Context mContext;
     private CartProvider mCartProvider;
 
+    private MainActivity mActivity;
+
     public HotWaresAdapter(Context context, List<Ware> datas) {
-        super(context,datas,R.layout.template_hot_cardview);
+        super(context, datas, R.layout.template_hot_cardview);
         this.mContext = context;
-        mCartProvider = new CartProvider(context);
+        mCartProvider = CartProvider.getInstance();
+
+        if (context instanceof MainActivity)
+            mActivity = (MainActivity) context;
     }
 
     @Override
@@ -43,28 +48,22 @@ public class HotWaresAdapter extends SimpleAdapter<Ware>{
         mDescription.setText(item.getName());
         mPrice.setText("￥" + item.getPrice());
         FrescoHelper.loadImage(item.getImgUrl(), mDraweeView);
+        if (mBuy != null) {
+            mBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCartProvider.put(item);
+                    mActivity.setCartBadge(mCartProvider.getCartNumber());
+                    ToastUtils.show(mContext, R.string.addToCart, Toast.LENGTH_SHORT);
+                }
+            });
+        }
 
-        mBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShoppingCart cart = wareToShoppingCart(item);
-                mCartProvider.put(cart);
-
-                ToastUtils.show(mContext,R.string.addToCart, Toast.LENGTH_SHORT);
-            }
-        });
     }
 
-    private  ShoppingCart wareToShoppingCart(Ware ware){
-        ShoppingCart cart = new ShoppingCart();
-
-        cart.setCount(1);
-        cart.setIsChecked(true);
-        cart.setId(ware.getId());
-        cart.setImgUrl(ware.getImgUrl());
-        cart.setName(ware.getName());
-        cart.setPrice(ware.getPrice());
-
-        return cart;
+    public void resetLayout(int layoutId) {
+        this.mLayoutId = layoutId;
+//        notifyDataSetChanged();
+//        notifyItemRangeChanged(0,getDatas().size());
     }
 }

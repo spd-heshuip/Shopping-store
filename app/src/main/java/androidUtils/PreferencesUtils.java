@@ -30,6 +30,8 @@ import android.content.SharedPreferences;
  */
 public class PreferencesUtils {
 
+    private static final String TAG= PreferencesUtils.class.getSimpleName();
+
     public static String PREFERENCE_NAME = "Cniao_Pref_Common";
 
     /**

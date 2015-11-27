@@ -1,15 +1,18 @@
 package com.learn.shuip.yayashop;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -21,29 +24,39 @@ import com.learn.shuip.yayashop.fragment.CategoryFragment;
 import com.learn.shuip.yayashop.fragment.HomeFragment;
 import com.learn.shuip.yayashop.fragment.HotFragment;
 import com.learn.shuip.yayashop.fragment.MineFragment;
+import com.learn.shuip.yayashop.util.CartProvider;
 import com.learn.shuip.yayashop.widget.CustomToolbar;
-import com.learn.shuip.yayashop.widget.FragmentTabHost;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,FragmentTabHost.OnTabChangeListener {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener,FragmentTabHost.OnTabChangeListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private int numbet_cart = 0;
+
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
 
     private CustomToolbar mCustomToolbar;
     private ViewPager mViewPager;
+    private ViewStub mViewStub;
+    private TextView mTextBadge;
 
     private CartFragment mCartFragment;
 
     private List<Tab> mTabs = new ArrayList<Tab>(5);
 
+    private CartProvider mCartProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mCartProvider = CartProvider.getInstance();
+
+        numbet_cart = mCartProvider.getCartNumber();
 
         initToolBar();
         initTab();
@@ -73,7 +86,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         for (Tab tab : mTabs){
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(getString(tab.getTitle()));
-            tabSpec.setIndicator(buildIndicator(tab));
+            if (getString(tab.getTitle()).equals("购物车"))
+                tabSpec.setIndicator(buildIndicatorWithBadge(tab));
+            else
+                tabSpec.setIndicator(buildIndicator(tab));
             mTabHost.addTab(tabSpec, tab.getFragment(),null);
         }
 
@@ -97,6 +113,38 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         text.setText(tab.getTitle());
 
         return view;
+    }
+
+    private View buildIndicatorWithBadge(Tab tab){
+        View view = mInflater.inflate(R.layout.tab_indicator_with_badge,null);
+        ImageView img = (ImageView) view.findViewById(R.id.icon_tab);
+        TextView text = (TextView) view.findViewById(R.id.txt_indicartor);
+        mTextBadge = (TextView) view.findViewById(R.id.tabBadge);
+
+        img.setBackgroundResource(tab.getIcon());
+        text.setText(tab.getTitle());
+        if (numbet_cart > 0){
+            mTextBadge.setText(numbet_cart + "");
+        }
+
+        return view;
+    }
+
+    private void AnimationTextView(TextView textView){
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(textView,"scaleX",1f,1.5f,1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(textView,"scaleY",1f,1.5f,1f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(animatorX).with(animatorY);
+        animatorSet.setDuration(1500);
+        animatorSet.start();
+    }
+
+    public void setCartBadge(int number){
+        if (mTextBadge != null){
+            mTextBadge.setText(number + "");
+            AnimationTextView(mTextBadge);
+        }
     }
 
     @Override
@@ -166,6 +214,12 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         public int getCount() {
             return mTabs.size();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCartBadge(mCartProvider.getCartNumber());
     }
 
     @Override

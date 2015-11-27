@@ -54,4 +54,12 @@ public abstract class BaseCallback<T> {
      * @param e
      */
     public abstract void onError(Response response,int code,IOException e);
+
+
+    /**
+     * Token状态码401，402，403等时调用此方法
+     * @param response
+     * @param code
+     */
+    public abstract void onTokenError(Response response,int code);
 }

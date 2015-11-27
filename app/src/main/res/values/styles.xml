@@ -101,6 +101,30 @@
     <style name="customCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_checkbox_style</item>
     </style>
+    
+    <style name="customTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/red</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">@color/white</item>
+        <item name="tabTextAppearance">@style/customTabTextAppearence</item>
+        <item name="tabSelectedTextColor">@color/red</item>
+    </style>
+    
+    <style name="customTabTextAppearence" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/darkgray</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="customEditText" >
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/defaultTextColor</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/defaultTextColor</item>
+    </style>
 
 
 </resources>
